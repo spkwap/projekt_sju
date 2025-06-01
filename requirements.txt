@@ -1,0 +1,7 @@
+qiskit
+matplotlib
+pillow
+pycryptodomex
+cryptography
+ipykernel
+jupyter
