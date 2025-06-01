@@ -1,10 +1,10 @@
 ---
 marp: true
 math: mathjax
+mermaid: true
 title: Raport z projektu
 size: 16:9
 paginate: true
-mermaid: true
 transition: fade
 backgroundImage: url("page-background.png")
 footer: "**Raport SJU**"
@@ -58,14 +58,9 @@ style: |
 
 # Diagram przepływu pracy
 
-```mermaid
-flowchart TD
-    A[Start] --> B[Build Docker image]
-    B --> C[Test Python packages]
-    C --> D[Push to GHCR]
-    D --> E[Use in devcontainer]
-```
-
+<div style="display: flex; justify-content: center;">
+    <img src="diagram.png" width="30%">
+</div>
 
 --- 
 # Praca z notatnikiem Jupyter
