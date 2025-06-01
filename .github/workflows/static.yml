@@ -1,4 +1,4 @@
-name: Build and Deploy MARP Presentation
+name: Deploy MARP presentation to GitHub Pages
 
 on:
   push:
@@ -15,31 +15,42 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
+      - name: Setup Node.js (required for marp-cli)
         uses: actions/setup-node@v3
         with:
-          node-version: '20'
+          node-version: '18'
 
-      - name: Install Marp CLI
+      - name: Install marp-cli
         run: npm install -g @marp-team/marp-cli
 
       - name: Build HTML presentation
         run: marp doc/raport.md --html -o doc/index.html
 
-      - name: Setup GitHub Pages
+      - name: Build PDF presentation
+        run: marp doc/raport.md --pdf -o doc/raport.pdf
+
+      - name: Upload PDF as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: raport-pdf
+          path: doc/raport.pdf
+
+      - name: Setup Pages
         uses: actions/configure-pages@v5
 
-      - name: Upload static site
+      - name: Upload artifact to GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
-          path: 'doc'
+          path: doc
 
       - name: Deploy to GitHub Pages
         id: deployment
